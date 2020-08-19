@@ -51,12 +51,15 @@ TYPES = {"noun": ["noun, masculine", "noun, neuter", "noun, feminine", "noun", '
 
 
 def linguee(word, from_l, to_l, type=None):
-    #
-    # crawl through linguee for a definition.
-    # will create new functions for API calls to Collins, Oxford, Glosbed etc when I get API keys for them approved
-    #
-    # will rely on Glosbed as a secondary look-up service, with Collins next and Linguee as a last option.
-    #
+    """
+    crawl through linguee for a definition
+
+    :param word: str
+    :param from_l: str
+    :param to_l: str
+    :param type:
+    :return:
+    """
     word = word.lower()
     from_l = DICT_LANGUAGE[from_l].lower() if len(from_l) == 2 else from_l.lower()
     to_l = DICT_LANGUAGE[to_l].lower() if len(to_l) == 2 else to_l.lower()
@@ -90,19 +93,7 @@ def linguee(word, from_l, to_l, type=None):
                 definitions.append(element.get_text())
             elif not bool(type):
                 definitions.append(element.get_text())
-    directory = "dictionary"
-    if not os.path.exists(directory):
-        os.makedirs(directory)
 
-    writepath = r"{}/{}.txt".format(directory, word)
-    mode = 'a+' if os.path.exists(writepath) else 'w+'
-
-    if definitions is not None:
-        with open(writepath, mode) as file2:
-            file2.write("{};TR-{}-{};{};\n".format(word, short_from, short_to, definitions))
-            file2.close()
-    else:
-        definitions = "word not found"
     return definitions
 
 
